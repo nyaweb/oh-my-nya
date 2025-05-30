@@ -32,12 +32,13 @@ case "$1" in
     ls -1 ~/.cache/oh-my-posh/themes | sed 's/\.omp\..*//' | nl -w1 -s'. '
     ;;
   install)
+    echo "instalado tema $2:"
+    pkg=$(ls -1 ~/.cache/oh-my-posh/themes | sed -n "${2}p")
     if [ -z "$pkg" ]; then
-      echo "Selecciona una opcion valida"
+      echo "...Selecciona una opcion valida"
     else
       formatTheme
-      echo "instalado tema $2:"
-      pkg=$(ls -1 ~/.cache/oh-my-posh/themes | sed -n "${2}p")
+
       echo "$pkg" | sed 's/\.omp\..*//'
       echo "eval \"\$(oh-my-posh init bash --config /root/.cache/oh-my-posh/themes/$pkg)\"" >> ~/.bashrc
       source ~/.bashrc
