@@ -7,7 +7,7 @@ check(){
 }
 
 formatPath(){
-    sed -i '/export PATH="\$PATH:\/root\/.local\/bin"/d' ~/.bashrc
+    sed -i '/export PATH="\$PATH:\/$HOME\/.local\/bin"/d' ~/.bashrc
 }
 
 formatTheme(){
@@ -21,8 +21,8 @@ case "$1" in
     eval "command -v oh-my-posh $cmdn" || curl -s https://ohmyposh.dev/install.sh | bash -s &&
     echo "Se ha instalado oh-my-nya..." &&
     formatPath &&
-    echo 'export PATH="$PATH:/root/.local/bin"' >> ~/.bashrc &&
-    echo 'eval "$(oh-my-posh init bash --config /root/.cache/oh-my-posh/themes/atomic.omp.json)"' >> ~/.bashrc &&
+    echo 'export PATH="$PATH:/$HOME/.local/bin"' >> ~/.bashrc &&
+    echo 'eval "$(oh-my-posh init bash --config /$HOME/.cache/oh-my-posh/themes/atomic.omp.json)"' >> ~/.bashrc &&
     source ~/.bashrc
     echo ". ohmynya themes | . ohmynya install #"
     cp "$0" /usr/bin/ohmynya
@@ -40,7 +40,7 @@ case "$1" in
       formatTheme
 
       echo "$pkg" | sed 's/\.omp\..*//'
-      echo "eval \"\$(oh-my-posh init bash --config /root/.cache/oh-my-posh/themes/$pkg)\"" >> ~/.bashrc
+      echo "eval \"\$(oh-my-posh init bash --config /$HOME/.cache/oh-my-posh/themes/$pkg)\"" >> ~/.bashrc
       source ~/.bashrc
     fi
     ;;
