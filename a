@@ -1,3 +1,20 @@
 #!/bin/bash
 
-[ -f "$0" ] && [ -r "$0" ] && echo "Ejecutando desde archivo: $0" || echo "Ejecutando desde stream o sin archivo local"
+cmdn=">/dev/null 2>&1"
+run(){ [ $EUID -ne 0 ] && sudo bash -c "$* $cmdn" || bash -c "$* $cmdn"; }
+apti(){ run "apt install -y $1"; }
+#instll(){ command -v "$1" $cmdn || { echo Instalando $1...; apti "$1"; }; }
+instll(){ eval "command -v $1 $cmdn" || { echo Instalando $1...; apti "$1"; }; }
+instll unzip
+instll curl
+
+local(){
+[ -f /usr/bin/ohmynya ] && echo "aqui hay chelas" || { run "cp $0 /usr/bin/ohmynya"; run "chmod +x /usr/bin/ohmynya"; }
+}
+
+stream(){
+run "curl -fsSL https://ohmy.nyaweb.com/sh -o /usr/bin/ohmynya"
+}
+[ -f "$0" ] && [ -r "$0" ] && local || stream
+
+
