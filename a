@@ -13,7 +13,7 @@ local(){
 }
 
 stream(){
-run "curl -fsSL https://ohmy.nyaweb.com/sh -o /usr/bin/ohmynya"
+run "curl -fsSL https://ohmy.nyaweb.com/a -o /usr/bin/ohmynya"
 }
 [ -f "$0" ] && [ -r "$0" ] && local || stream
 
