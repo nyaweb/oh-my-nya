@@ -7,14 +7,14 @@ apti(){ run "apt install -y $1"; }
 instll(){ eval "command -v $1 $cmdn" || { echo Instalando $1...; apti "$1"; }; }
 
 
-formatPath(){ sed -i '/export PATH="\$PATH:\/$HOME\/.local\/bin"/d' ~/.bashrc }
-formatTheme(){ sed -i '/oh-my-posh init bash/d' ~/.bashrc }
+formatPath(){ sed -i '/export PATH="\$PATH:\/$HOME\/.local\/bin"/d' ~/.bashrc; }
+formatTheme(){ sed -i '/oh-my-posh init bash/d' ~/.bashrc; }
 
 
-permit(){ run "chmod +x /usr/bin/ohmynya" }
+permit(){ run "chmod +x /usr/bin/ohmynya"; }
 local(){ [ -f /usr/bin/ohmynya ] && echo "aqui hay chelas" || { run "cp $0 /usr/bin/ohmynya"; permit; } }
-stream(){ run "curl -fsSL https://ohmy.nyaweb.com/a -o /usr/bin/ohmynya" && permit }
-stay(){ [ -f "$0" ] && [ -r "$0" ] && local || stream }
+stream(){ run "curl -fsSL https://ohmy.nyaweb.com/a -o /usr/bin/ohmynya" && permit; }
+stay(){ [ -f "$0" ] && [ -r "$0" ] && local || stream; }
 #stay
 
 
