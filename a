@@ -5,16 +5,51 @@ run(){ [ $EUID -ne 0 ] && sudo bash -c "$* $cmdn" || bash -c "$* $cmdn"; }
 apti(){ run "apt install -y $1"; }
 #instll(){ command -v "$1" $cmdn || { echo Instalando $1...; apti "$1"; }; }
 instll(){ eval "command -v $1 $cmdn" || { echo Instalando $1...; apti "$1"; }; }
-instll unzip
-instll curl
-
-local(){
-[ -f /usr/bin/ohmynya ] && echo "aqui hay chelas" || { run "cp $0 /usr/bin/ohmynya"; run "chmod +x /usr/bin/ohmynya"; }
-}
-
-stream(){
-run "curl -fsSL https://ohmy.nyaweb.com/a -o /usr/bin/ohmynya"
-}
-[ -f "$0" ] && [ -r "$0" ] && local || stream
 
 
+formatPath(){ sed -i '/export PATH="\$PATH:\/$HOME\/.local\/bin"/d' ~/.bashrc }
+formatTheme(){ sed -i '/oh-my-posh init bash/d' ~/.bashrc }
+
+
+permit(){ run "chmod +x /usr/bin/ohmynya" }
+local(){ [ -f /usr/bin/ohmynya ] && echo "aqui hay chelas" || { run "cp $0 /usr/bin/ohmynya"; permit; } }
+stream(){ run "curl -fsSL https://ohmy.nyaweb.com/a -o /usr/bin/ohmynya" && permit }
+stay(){ [ -f "$0" ] && [ -r "$0" ] && local || stream }
+#stay
+
+
+case "$1" in
+  "")
+    instll unzip
+    instll curl
+
+    eval "command -v oh-my-posh $cmdn" || curl -s https://ohmyposh.dev/install.sh | bash -s &&
+    echo "Se ha instalado oh-my-nya..." &&
+    formatPath &&
+    echo 'export PATH="$PATH:/$HOME/.local/bin"' >> ~/.bashrc &&
+    echo 'eval "$(oh-my-posh init bash --config /$HOME/.cache/oh-my-posh/themes/atomic.omp.json)"' >> ~/.bashrc &&
+    source ~/.bashrc
+    echo ". ohmynya themes | . ohmynya install #"
+
+    stay
+    ;;
+  themes)
+    ls -1 ~/.cache/oh-my-posh/themes | sed 's/\.omp\..*//' | nl -w1 -s'. '
+    ;;
+  install)
+    echo "instalado tema $2:"
+    pkg=$(ls -1 ~/.cache/oh-my-posh/themes | sed -n "${2}p")
+    if [ -z "$pkg" ]; then
+      echo "...Selecciona una opcion valida"
+    else
+      formatTheme
+
+      echo "$pkg" | sed 's/\.omp\..*//'
+      echo "eval \"\$(oh-my-posh init bash --config /$HOME/.cache/oh-my-posh/themes/$pkg)\"" >> ~/.bashrc
+      source ~/.bashrc
+    fi
+    ;;
+  *)
+    echo "Comando no reconocido"
+    ;;
+esac
