@@ -12,7 +12,7 @@ formatTheme(){ sed -i '/oh-my-posh init bash/d' ~/.bashrc; }
 
 
 permit(){ run "chmod +x /usr/bin/ohmynya"; }
-local(){ [ -f /usr/bin/ohmynya ] && echo "aqui hay chelas" || { run "cp $0 /usr/bin/ohmynya"; permit; } }
+local(){ [ -f /usr/bin/ohmynya ] || { run "cp $0 /usr/bin/ohmynya"; permit; } }
 stream(){ run "curl -fsSL https://ohmy.nyaweb.com/a -o /usr/bin/ohmynya" && permit; }
 stay(){ [ -f "$0" ] && [ -r "$0" ] && local || stream; }
 #stay
